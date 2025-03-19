@@ -1,5 +1,6 @@
 import { Hono } from "hono"
 import { cors } from "hono/cors"
+import { env } from "cloudflare:workers"
 
 type Env = {
   Bindings: {
@@ -51,6 +52,10 @@ async function sign(data: string, privateKeyPem: string): Promise<string> {
   return base64urlEncode(Buffer.from(signature).toString("base64"))
 }
 
+interface TokenResponse {
+  access_token: string
+}
+
 app.post("/upload", async (c) => {
   try {
     const formData = await c.req.formData()
@@ -82,7 +87,7 @@ app.post("/upload", async (c) => {
     if (!tokenResponse.ok) {
       throw new Error("Failed to get access token")
     }
-    const tokenData = await tokenResponse.json()
+    const tokenData = (await tokenResponse.json()) as TokenResponse
     const accessToken = tokenData.access_token
     const bucketName = c.env.BUCKET_NAME
     const objectName = `images/${Date.now()}-${file.name}`
@@ -91,7 +96,7 @@ app.post("/upload", async (c) => {
       "----WebKitFormBoundary" +
       crypto
         .getRandomValues(new Uint32Array(4))
-        .map((n) => n.toString(36))
+        .map((n) => parseInt(n.toString(36), 36))
         .join("")
     const encoder = new TextEncoder()
     const metadataPart = `--${boundary}\r\nContent-Type: application/json\r\n\r\n${JSON.stringify(

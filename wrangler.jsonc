@@ -1,11 +1,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "web",
+  "name": "api",
   "main": "src/index.ts",
-  "compatibility_date": "2025-03-17"
-  // "compatibility_flags": [
-  //   "nodejs_compat"
-  // ],
+  "compatibility_date": "2025-03-17",
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
   // "vars": {
   //   "MY_VAR": "my-variable"
   // },
