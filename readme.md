@@ -1,7 +1,7 @@
 ## Setup
 
 ```
-pnpm i
+bun i
 ```
 
 ## Run
