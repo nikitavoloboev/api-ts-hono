@@ -1,6 +1,8 @@
 {
   "name": "api",
   "scripts": {
+    "s": "bun --watch scripts/i.ts",
+    "try": "bun --watch scripts/try.ts",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy --minify"
   },
